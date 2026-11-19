@@ -27,8 +27,7 @@ jobs:
       env:
         KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
       run: |
-        echo "$KEYSTORE_BASE64" | base64 --decode > release.jks
-        # Exportamos la ruta absoluta para que Gradle la encuentre
+        echo "$KEYSTORE_BASE64" | tr -d '[:space:]' | base64 --decode > release.jks
         echo "KEYSTORE_FILE=$(pwd)/release.jks" >> $GITHUB_ENV
 
     - name: Compilar APK de Release Firmada
