@@ -23,11 +23,23 @@ jobs:
     - name: Dar permisos al Gradle Wrapper
       run: chmod +x ./gradlew
 
-    - name: Compilar APK de Debug
-      run: ./gradlew assembleDebug --stacktrace
+    - name: Decodificar Keystore
+      env:
+        KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+      run: |
+        echo "$KEYSTORE_BASE64" | base64 --decode > release.jks
+        # Exportamos la ruta absoluta para que Gradle la encuentre
+        echo "KEYSTORE_FILE=$(pwd)/release.jks" >> $GITHUB_ENV
+
+    - name: Compilar APK de Release Firmada
+      env:
+        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      run: ./gradlew assembleRelease --stacktrace
 
     - name: Subir APK como Artefacto
       uses: actions/upload-artifact@v4
       with:
-        name: app-debug
-        path: app/build/outputs/apk/debug/app-debug.apk
+        name: app-release-firmada
+        path: app/build/outputs/apk/release/app-release.apk
