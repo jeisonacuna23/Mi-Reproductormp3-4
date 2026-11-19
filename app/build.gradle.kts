@@ -43,7 +43,7 @@ dependencies {
 
     // Iconics para FontAwesome en Compose
     implementation("com.mikepenz:iconics-compose:5.4.0")
-    implementation("com.mikepenz:fontawesome-typeface:5.9.0.3-kotlin@aar")
+    implementation("com.mikepenz:fontawesome-typeface:5.13.3.2-kotlin@aar")
     
     // DataStore para guardar las carpetas seleccionadas
     implementation("androidx.datastore:datastore-preferences:1.1.1")
